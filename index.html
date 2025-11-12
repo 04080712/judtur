@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JUDTUR - Avaliação de Contrato e Atendimento</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="assets/images/JUDTUR_TRANSP.png" type="image/png">
+
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Ícones (Iconify) -->
+  <script src="https://code.iconify.design/3/3.1.1/iconify.min.js" defer></script>
+</head>
+
+<body>
+  <div class="background"></div>
+
+  <main class="card-container">
+    <!-- Tela de Login/Coleta de Leads -->
+    <section class="login-card active" id="loginCard">
+      <header class="card-header">
+        <img src="assets/images/JUDTUR TRANSP..png" alt="Logo da JUDTUR" class="logo">
+      </header>
+
+      <p class="description">
+        Avalie a conformidade legal do seu contrato e atendimento na agência de turismo.
+        Preencha os dados abaixo para iniciar.
+      </p>
+
+      <form id="signInForm" class="form-container">
+        <div class="input-group">
+          <label for="name" class="sr-only">Nome Completo</label>
+          <input type="text" id="name" name="name" placeholder="Seu Nome Completo" autocomplete="name" required>
+        </div>
+
+        <div class="input-group">
+          <label for="agency" class="sr-only">Nome da Agência</label>
+          <input type="text" id="agency" name="agency" placeholder="Nome da Agência" required>
+        </div>
+
+        <div class="input-group">
+          <label for="email" class="sr-only">Email</label>
+          <input type="email" id="email" name="email" placeholder="seu.email@exemplo.com" autocomplete="email" required>
+        </div>
+
+        <div class="input-group">
+          <label for="phone" class="sr-only">Número de Telefone</label>
+          <input type="tel" id="phone" name="phone" placeholder="+55 (DDD) 9XXXX-XXXX" autocomplete="tel" required>
+        </div>
+
+        <button type="submit" class="btn-primary">Iniciar Diagnóstico</button>
+      </form>
+    </section>
+
+    <!-- Tela do Diagnóstico (Perguntas) -->
+    <section class="diagnosis-card" id="diagnosisCard">
+        <header class="card-header diagnosis-header">
+            <img src="assets/images/JUDTUR TRANSP..png" alt="Logo da JUDTUR" class="logo">
+            <span class="section-indicator" id="sectionIndicator">Seção 1 de 4</span>
+        </header>
+
+        <h2 class="section-title" id="sectionTitle"></h2>
+
+        <div id="questionsContainer" class="questions-container">
+            <!-- As perguntas serão injetadas aqui via JavaScript -->
+        </div>
+
+        <div class="navigation-buttons">
+            <button id="prevSectionBtn" class="btn-secondary" style="display: none;">Seção Anterior</button>
+            <button id="nextSectionBtn" class="btn-primary">Próxima Seção</button>
+        </div>
+    </section>
+
+    <!-- Tela de Resultados do Diagnóstico -->
+    <section class="results-card" id="resultsCard">
+        <header class="card-header results-header">
+            <img src="assets/images/JUDTUR TRANSP..png" alt="Logo da JUDTUR" class="logo">
+        </header>
+
+        <h2 class="results-main-title">Sumário do Diagnóstico</h2>
+        <p class="agency-info" id="agencyInfo"></p>
+
+        <div class="results-content-wrapper">
+            <!-- Pontuação Geral Ponderada -->
+            <div class="results-block score-block">
+                <h3 class="block-title">Pontuação Geral Ponderada</h3>
+                <p class="overall-score" id="overallScoreDisplay"></p>
+                <p class="overall-classification" id="overallClassificationDisplay"></p>
+            </div>
+
+            <!-- Resultados por Seção -->
+            <div class="results-block sections-results-block">
+                <h3 class="block-title">Resultados por Seção</h3>
+                <div id="sectionsResultsList" class="sections-list">
+                    <!-- Itens das seções serão injetados aqui via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Botão de Reiniciar Diagnóstico (centralizado abaixo de tudo) -->
+            <div class="action-buttons-wrapper">
+                <button id="restartBtn" class="btn-secondary restart-btn">
+                    <span class="iconify" data-icon="material-symbols:refresh" aria-hidden="true"></span>
+                    Reiniciar Diagnóstico
+                </button>
+            </div>
+        </div>
+    </section>
+
+  </main>
+
+  <!-- Botão de Modo Noturno -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema claro/escuro">
+    <span class="iconify" data-icon="solar:sun-bold" aria-hidden="true"></span>
+  </button>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
