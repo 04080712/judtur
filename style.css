@@ -35,12 +35,12 @@
   --font-family-lato: 'Lato', sans-serif;
 
   /* Cores para Respostas */
-  --color-answer-yes: #DEC443; /* Verde */
-  --color-answer-no: #DEC443;  /* Vermelho */
+  --color-answer-yes: #4CAF50; /* Verde */
+  --color-answer-no: #E53935;  /* Vermelho */
   --color-answer-na: #757575;  /* Cinza */
   --color-answer-selected-border: var(--color-primary-yellow);
 
-  /* Cor para Plano de Ação */
+  /* Cor para Plano de Ação (mantido, mas não será usado na lógica atual) */
   --color-action-plan-bg: rgba(228, 197, 75, 0.15); /* Amarelo translúcido */
   --color-action-plan-border: var(--color-primary-yellow);
   --color-action-plan-text: var(--color-primary-yellow);
@@ -325,7 +325,7 @@ body {
 .answer-buttons {
   display: flex;
   gap: 10px; /* Espaçamento entre os botões de resposta */
-  margin-bottom: 15px; /* Espaço entre botões e plano de ação */
+  /* margin-bottom: 15px; */ /* Removido, pois o plano de ação não aparece mais aqui */
 }
 
 .answer-buttons button {
@@ -357,7 +357,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* Plano de Ação Sugerido (quando resposta é 'Não') */
+/* Plano de Ação Sugerido (mantido, mas não será usado na lógica atual) */
 .action-plan {
     background-color: var(--color-action-plan-bg);
     border: 1px solid var(--color-action-plan-border);
@@ -385,23 +385,24 @@ body {
 }
 
 /* ================================
-   🧮 TELA DE RESULTADOS (ATUALIZADO PARA O NOVO DESIGN)
+   🧮 TELA DE RESULTADOS (ATUALIZADO)
 =================================*/
 .results-card {
-    max-width: 600px; /* Mantém a largura consistente com as outras cards */
+    max-width: 700px; /* Ajusta a largura máxima para o layout centralizado */
     padding: 30px;
-    gap: 25px; /* Espaçamento entre os blocos de resultado */
+    gap: 0;
 }
 
 .results-header {
     display: flex;
-    justify-content: center; /* Centraliza a logo */
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .results-header .logo {
-    margin: 0;
+    margin: 0 auto; /* Centraliza o logo no cabeçalho */
     max-width: 100px;
 }
 
@@ -419,24 +420,24 @@ body {
     font-size: 1rem;
     color: var(--color-text-muted);
     text-align: center;
-    margin-bottom: 15px; /* Ajuste para dar espaço abaixo da info da agência */
+    margin-bottom: 30px;
 }
 
-/* Novo wrapper para centralizar os blocos de resultado */
-.results-content-wrapper {
+.results-content-wrapper { /* Novo wrapper para centralizar os blocos */
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centraliza o conteúdo */
+    align-items: center; /* Centraliza os itens horizontalmente */
     width: 100%;
-    gap: 25px; /* Espaçamento entre os blocos */
+    gap: 25px; /* Espaçamento entre os blocos de resultado */
 }
 
-.results-block { /* Estilo base para todos os blocos de resultado */
+.results-block { /* Estilo comum para blocos de resultado */
+    width: 100%;
+    max-width: 500px; /* Limita a largura dos blocos para centralizar melhor */
     background-color: rgba(255, 255, 255, 0.08);
     border-radius: 12px;
     padding: 25px;
-    width: 100%; /* Ocupa a largura total do wrapper */
-    text-align: center; /* Centraliza o texto dentro do bloco */
+    text-align: center; /* Centraliza o texto dentro dos blocos */
 }
 
 .block-title {
@@ -473,7 +474,7 @@ body {
 .overall-classification.status-excellent { background-color: var(--color-status-excellent); color: white; }
 
 .sections-list {
-    text-align: left; /* Alinha o texto das seções à esquerda dentro do bloco */
+    text-align: left; /* Alinha o texto da lista à esquerda */
 }
 
 .section-item {
@@ -524,22 +525,22 @@ body {
 .section-status-badge.status-good { background-color: var(--color-status-good); }
 .section-status-badge.status-excellent { background-color: var(--color-status-excellent); }
 
-.action-buttons-block {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Centraliza o botão */
-    gap: 15px;
+/* Wrapper para o botão de ação no resultado */
+.action-buttons-wrapper {
     width: 100%;
+    max-width: 300px; /* Limita a largura do botão para melhor centralização */
+    margin-top: 20px; /* Espaço acima do botão */
+    display: flex;
+    justify-content: center; /* Centraliza o botão */
 }
 
-.action-buttons-block .btn-secondary {
+.restart-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 15px;
     font-size: 0.95rem;
-    max-width: 300px; /* Limita a largura do botão de reiniciar */
+    width: 100%; /* Ocupa a largura máxima do wrapper */
 }
 
 /* ================================
@@ -593,12 +594,9 @@ body.dark-mode .background {
     filter: brightness(0.3) grayscale(0.6); /* Fundo mais escuro e acinzentado no dark mode */
 }
 
-body.dark-mode .question-card {
-  background-color: rgba(255, 255, 255, 0.12);
-}
-
+body.dark-mode .question-card,
 body.dark-mode .results-block {
-    background-color: rgba(255, 255, 255, 0.12);
+  background-color: rgba(255, 255, 255, 0.12);
 }
 
 /* ================================
@@ -622,12 +620,7 @@ body.dark-mode .results-block {
     .block-title {
         font-size: 1rem;
     }
-
-    .action-buttons-block .btn-secondary {
-        max-width: 250px;
-    }
 }
-
 
 @media (max-width: 480px) {
   .login-card, .diagnosis-card, .results-card {
@@ -682,6 +675,7 @@ body.dark-mode .results-block {
     padding: 10px;
   }
 
+  /* Plano de ação (mesmo que não visível, mantemos o estilo base) */
   .action-plan {
       padding: 12px;
       font-size: 0.85rem;
@@ -730,10 +724,9 @@ body.dark-mode .results-block {
       padding: 3px 8px;
   }
 
-  .action-buttons-block .btn-secondary {
+  .restart-btn {
       font-size: 0.9rem;
       padding: 12px;
-      max-width: 200px; /* Ajuste para mobile */
   }
 
   .theme-toggle {

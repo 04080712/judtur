@@ -83,8 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const overallScoreDisplay = document.getElementById('overallScoreDisplay');
   const overallClassificationDisplay = document.getElementById('overallClassificationDisplay');
   const sectionsResultsList = document.getElementById('sectionsResultsList');
-  // const importantWarnings = document.getElementById('importantWarnings'); // Removido
-  // const exportPdfBtn = document.getElementById('exportPdfBtn'); // Removido
   const restartBtn = document.getElementById('restartBtn');
 
   const themeToggle = document.getElementById('themeToggle');
@@ -223,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
           // Remove 'selected' de outros botões na mesma pergunta
           Array.from(answerButtons.children).forEach(btn => btn.classList.remove('selected'));
           button.classList.add('selected');
-          renderActionPlan(questionCard, question, value);
+          // A lógica do plano de ação foi removida daqui, então nada acontece ao clicar em 'Não'
           updateNavigationButtons(); // Atualiza estado dos botões de navegação
         });
         return button;
@@ -234,37 +232,11 @@ document.addEventListener('DOMContentLoaded', () => {
       answerButtons.appendChild(createAnswerButton('N/A', 'na'));
       questionCard.appendChild(answerButtons);
 
-      // Renderiza o plano de ação se já houver uma resposta 'no'
-      renderActionPlan(questionCard, question, userAnswers[question.id]);
-
       questionsContainer.appendChild(questionCard);
     });
 
     updateNavigationButtons();
   };
-
-  /**
-   * Renderiza ou esconde o plano de ação de uma pergunta.
-   * @param {HTMLElement} questionCard - O elemento do cartão da pergunta.
-   * @param {Object} question - O objeto da pergunta do JSON.
-   * @param {'yes' | 'no' | 'na'} answer - A resposta selecionada pelo usuário.
-   */
-  const renderActionPlan = (questionCard, question, answer) => {
-    let actionPlanDiv = questionCard.querySelector('.action-plan');
-    if (actionPlanDiv) {
-      actionPlanDiv.remove(); // Remove o existente para recriar
-    }
-
-    if (answer === 'no' && question.plan) {
-      actionPlanDiv = document.createElement('div');
-      actionPlanDiv.classList.add('action-plan');
-      const planText = document.createElement('p');
-      planText.innerHTML = `<strong>Plano de Ação Sugerido:</strong> ${question.plan}`;
-      actionPlanDiv.appendChild(planText);
-      questionCard.appendChild(actionPlanDiv);
-    }
-  };
-
 
   /**
    * Atualiza o estado dos botões de navegação (Anterior/Próxima).
@@ -342,16 +314,13 @@ document.addEventListener('DOMContentLoaded', () => {
   const calculateAndDisplayResults = () => {
     let totalWeightedScore = 0;
     let maxPossibleWeightedScore = 0;
-    // let warningsHtml = ''; // Removido
 
     // Limpa exibições anteriores
     sectionsResultsList.innerHTML = '';
-    // importantWarnings.innerHTML = ''; // Removido
 
     questionnaireData.sections.forEach(section => {
       let sectionScore = 0;
       let sectionMaxScore = 0;
-      let sectionAnsweredCount = 0;
 
       section.questions.forEach(question => {
         sectionMaxScore += question.weight; // Cada pergunta contribui com seu peso para o máximo
@@ -359,14 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (answer === 'yes') {
           sectionScore += question.weight;
-          sectionAnsweredCount++;
-        } else if (answer === 'no') {
-          sectionAnsweredCount++;
-          // A lógica de plano de ação como "aviso importante" foi removida,
-          // pois a seção de avisos foi removida.
-          // warningsHtml += `<p class="warning-item"><strong>${question.id}:</strong> ${question.plan}</p>`;
         } else if (answer === 'na') {
-            sectionAnsweredCount++;
             // Se a pergunta for N/A, ela não contribui para o score da seção nem para o maxScore da seção
             sectionMaxScore -= question.weight;
         }
@@ -416,64 +378,8 @@ document.addEventListener('DOMContentLoaded', () => {
     overallClassificationDisplay.textContent = overallClassificationLabel;
     overallClassificationDisplay.className = `overall-classification ${overallClassificationClass}`; // Aplica a classe
 
-    // importantWarnings.innerHTML = warningsHtml || '<p>Nenhum aviso importante ou plano de ação sugerido.</p>'; // Removido
     agencyInfoDisplay.textContent = `Diagnóstico para: ${userData.agency || 'Agência não informada'}`;
   };
-
-  // ===============================================
-  // 📥 Lógica de Exportação de PDF (removida a chamada, mas a função ainda existe)
-  // ===============================================
-
-  /*
-  // A função exportResultsToPdf foi removida do fluxo principal, mas está aqui caso queira reintroduzi-la.
-  const exportResultsToPdf = async () => {
-      themeToggle.style.display = 'none';
-      exportPdfBtn.disabled = true;
-
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF('p', 'pt', 'a4');
-
-      const card = document.getElementById('resultsCard');
-
-      const originalBodyBg = body.style.backgroundColor;
-      body.style.backgroundColor = 'white';
-
-      await html2canvas(card, {
-          scale: 2,
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: '#ffffff',
-          windowWidth: card.scrollWidth,
-          windowHeight: card.scrollHeight
-      }).then(canvas => {
-          const imgData = canvas.toDataURL('image/png');
-          const imgWidth = 595.28;
-          const pageHeight = 841.89;
-          const imgHeight = (canvas.height * imgWidth) / canvas.width;
-          let heightLeft = imgHeight;
-          let position = 0;
-
-          doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-          heightLeft -= pageHeight;
-
-          while (heightLeft >= 0) {
-              position = heightLeft - imgHeight;
-              doc.addPage();
-              doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
-              heightLeft -= pageHeight;
-          }
-
-          doc.save(`Diagnostico-JUDTUR-${userData.agency || 'agencia'}.pdf`);
-      }).catch(error => {
-          console.error("Erro ao gerar PDF:", error);
-          alert("Ocorreu um erro ao gerar o PDF. Tente novamente.");
-      }).finally(() => {
-          themeToggle.style.display = 'flex';
-          exportPdfBtn.disabled = false;
-          body.style.backgroundColor = originalBodyBg;
-      });
-  };
-  */
 
   // ===============================================
   // EventListeners
@@ -496,9 +402,6 @@ document.addEventListener('DOMContentLoaded', () => {
   prevSectionBtn.addEventListener('click', goToPrevSection);
   nextSectionBtn.addEventListener('click', goToNextSection);
 
-  // Botão de exportar PDF (removido, mas o listener pode ser descomentado se o botão for reintroduzido)
-  // exportPdfBtn.addEventListener('click', exportResultsToPdf);
-
   // Botão de reiniciar diagnóstico
   restartBtn.addEventListener('click', () => {
     // Limpa o estado
@@ -513,26 +416,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Inicializa a exibição na card de login
   showCard(loginCard);
-});
-
-document.getElementById("signInForm").addEventListener("submit", function(e) {
-  e.preventDefault(); // evita recarregar a página
-
-  fetch("https://n8n.srv1077102.hstgr.cloud/webhook/760d5370-cc3c-4f15-a1c9-ac0451aa8ac4", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      name: document.getElementById("name").value,
-      agency: document.getElementById("agency").value,
-      email: document.getElementById("email").value,
-      phone: document.getElementById("phone").value
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
-    console.log("Enviado com sucesso:", data);
-  })
-  .catch(err => {
-    console.error("Erro ao enviar:", err);
-  });
 });
